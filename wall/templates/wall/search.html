@@ -1,0 +1,87 @@
+{% extends 'wall/base.html' %}
+{% load static %}
+
+{% block title %}Поиск{{ block.super }}{% endblock %}
+
+{% block content %}
+
+<div class="row row-cols-1 row-cols-md-3">
+  {% for post in latest_post_list %}
+  <div class="col mb-4">
+    <div class="card">
+      {% if post.photo %}
+      <img src="{{ post.photo.url }}" class="card-img" width="350" alt="...">
+      {% else %}
+      <img src="{% static 'css/image/base.jpg' %}" class="card-img" width="350" alt="...">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ post.title_text }}</h5>
+        <p class="card-text">{{ post.text|safe|linebreaks|truncatewords:30 }}</p>
+        <a href="{% url 'wall:detail' post.pk %}" class="btn btn-outline-info btn-block">Показать полностью...</a>
+        <div>
+          <p> </p>
+        </div>  
+      <div class="card-footer">
+        <small class="text-muted">{{ post.pub_date|date:'SHORT_DATETIME_FORMAT' }}</small>
+      </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+{% comment %}
+
+<section class="blog-post-area">
+    <div class="container">
+        <div class="border-top" style="border-top: 1px solid #40c4ff;"></div>
+        <div class="row">
+            <div class="blog-post-area-style">
+
+                {% for post in posts %}
+                <div class="col-md-3">
+                    <div class="single-post">
+
+                        {% if post.photo %}
+                        <img src="{{ post.photo.url }}" alt="{{ post.title_text }}">
+                        {% else %}
+                        <img src="https://picsum.photos/id/1060/300/201/?blur=2" alt="{{ post.title_text }}">
+                        {% endif %}
+
+                        <h3><a href="{{ post. }}">{{ post.title_text }}</a></h3>
+                        <h4><span>Posted By: <span class="author-name">{{ post.author_name }}</span></span>
+                        </h4>
+                        {{ post.content|truncatewords_html:20|safe }}
+                        <h4><span>{{ post.created_at|date:"d.m.Y" }}</span></h4>
+                    </div>
+                </div>
+                {% empty %}
+                <p>По вашему запросу ничего не найдено...</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% if page_obj.has_other_pages %}
+    <div class="pegination">
+        <div class="nav-links">
+
+            {% for p in page_obj.paginator.page_range %}
+                {% if page_obj.number == p %}
+                <span class="page-numbers current">{{ p }}</span>
+                {% elif p > page_obj.number|add:-3 and p < page_obj.number|add:3 %}
+                <a class="page-numbers" href="?{{ s }}page={{ p }}">{{ p }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <a class="page-numbers" href="?{{ s }}page={{ page_obj.next_page_number }}"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+</section>
+{% endcomment %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'wall/base.html' %}
+
+{% block content %}
+
+<div id='add'>
+    <h1>Авторизация</h1>
+    <p>
+
+	</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-outline-info">Войти</button>
+    </form>
+</div>
+{% endblock %}

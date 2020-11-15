@@ -1,0 +1,63 @@
+{% extends 'wall/base.html' %}
+{% load static %}
+{% block title %}{{ post.title_text }}{% endblock %}
+{% block content %}
+<div class="card border-info mb-3" style="max-width: 100rem;">
+  <div class="card-header text-info">{{ post.pub_date|date:'SHORT_DATETIME_FORMAT' }}</div>
+  <div class="card-body">
+	<div class="card-img">
+		{% if post.photo %}
+		<img class="cimg" src="{{ post.photo.url }}" alt="" class="float-left mr-4">
+		{% else %}
+		<img class="cimg" src="{% static 'css/image/base.jpg' %}" class="float-left mr-4"  alt="">
+		{% endif %}
+	</div>
+    <h2 class="card-title">{{ post.title_text }}</h2>
+    <p class="card-text">{{ post.text|safe|linebreaks }}</p>
+	<form action="{% url 'wall:like' post.pk %}" method="POST">
+		{% csrf_token %}
+		<button type="submit"><img src="{% static 'css/image/like.jpg' %}" alt="" width="50px"></button>	
+		<span class="badge badge-light">{{ post.thumbnumber }}</span>	
+	</form>	
+  </div>
+</div>
+
+
+{% if request.user.is_authenticated %}
+<a class="btn btn-outline-info btn-lg btn-block" href="{% url 'wall:edit' post.pk %}" role="button">Редактировать пост</a>
+{% endif %}
+<hr>
+
+<div id='comment'>
+	<strong><u><h4>Комментарии:</h4></u></strong>
+	<p>
+
+	</p>
+	<hr>
+	{% if latest_comment_list %}
+		{% for comment in latest_comment_list %}
+		<strong><p>{{comment.author}}</p></strong>
+		<p>{{comment.text_comment}}
+			<hr>
+		</p>
+		{% endfor %}
+		{% else %}
+		У этой публикации пока нет комментариев.
+		{% endif %}
+</div>
+<hr>
+<div id='add'>
+	<div id='str' ><u><h4>Оставьте комментарий</4></u></div>
+	<form action="{% url 'wall:add_comment' post.pk %}" method="POST">
+		{% csrf_token %}
+		<div class="col">
+			<input type="text" class="form-control" required="" placeholder="Ваше имя" name="name"><br>
+		</div>
+		<div class="form-group">
+			<textarea name="text" class="form-control" required="" placeholder="Текст комментария" rows="3" cols="10"></textarea><br>
+		</div>
+		<button class="btn btn-outline-info" type="submit">Добавить комментарий</button>
+	</form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'wall/base.html' %}
+
+{% block title %}
+Обратная связь
+{% endblock %}
+
+{% block content %}
+
+
+<div id='add'>
+    <h1>Обратная связь</h1>
+    <p>
+
+    </p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-outline-info">Отправить</button>
+    </form>
+</div>    
+
+{% endblock %}

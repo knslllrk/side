@@ -1,0 +1,17 @@
+{% extends 'wall/base.html' %}
+{% block title %}Редактирование поста{% endblock %}
+{% block content %}
+
+<div id='add'>	
+	<h2>Редактирование поста</h2>
+	<p>
+
+	</p>
+	<form method="POST">
+	{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit" class="btn btn-outline-info">Добавить пост</button>
+	</form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'wall/base.html' %}
+{% load static %}
+{% block title %}Wall{% endblock %}
+{% block content %}
+
+<div class="row row-cols-1 row-cols-md-3">
+  {% for post in latest_post_list %}
+  <div class="col mb-4">
+    <div class="card">
+      {% if post.photo %}
+      <img src="{{ post.photo.url }}" class="card-img" width="350" alt="...">
+      {% else %}
+      <img src="{% static 'css/image/base.jpg' %}" class="card-img" width="350" alt="...">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ post.title_text }}</h5>
+        <p class="card-text">{{ post.text|safe|linebreaks|truncatewords:30 }}</p>
+        <a href="{% url 'wall:detail' post.pk %}" class="btn btn-outline-info btn-block">Показать полностью...</a>
+        <div>
+          <p> </p>
+        </div>  
+      <div class="card-footer">
+        <small class="text-muted">{{ post.pub_date|date:'SHORT_DATETIME_FORMAT' }}</small>
+      </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
